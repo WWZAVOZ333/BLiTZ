@@ -23,3 +23,11 @@ def get_session():
 def init_engine():
     from app.db import models
     Base.metadata.create_all(bind=engine)
+
+    # Зависимость для FastAPI (открывает и закрывает сессию на время запроса)
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
